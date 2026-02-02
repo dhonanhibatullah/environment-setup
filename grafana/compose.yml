@@ -2,6 +2,7 @@ services:
   loki:
     image: grafana/loki:latest
     container_name: donspace-loki
+    restart: unless-stopped
     user: "0"
     ports:
       - "3100:3100"
@@ -15,6 +16,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: donspace-grafana
+    restart: unless-stopped
     env_file:
       - .env
     ports:
@@ -28,6 +30,7 @@ services:
   alloy:
     image: grafana/alloy:latest
     container_name: donspace-alloy
+    restart: unless-stopped
     command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
     volumes:
       - ./config/alloy-config.alloy:/etc/alloy/config.alloy

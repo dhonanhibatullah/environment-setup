@@ -2,6 +2,7 @@ services:
   postgres:
     image: timescale/timescaledb:latest-pg16
     container_name: donspace-postgres
+    restart: unless-stopped
     ports:
       - "5432:5432"
     env_file:
