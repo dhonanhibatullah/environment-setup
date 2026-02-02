@@ -1,0 +1,21 @@
+services:
+  redis:
+    image: redis:alpine
+    container_name: donspace-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
+    volumes:
+      - donspace-redis-data:/data
+    networks:
+      - default
+
+networks:
+  default:
+    name: donspace-net
+    external: true
+
+volumes:
+  donspace-redis-data:

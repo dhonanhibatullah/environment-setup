@@ -1,0 +1,22 @@
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: donspace-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file:
+      - .env
+    volumes:
+      - donspace-minio-data:/data
+    networks:
+      - default
+
+networks:
+  default:
+    name: donspace-net
+    external: true
+
+volumes:
+  donspace-minio-data:

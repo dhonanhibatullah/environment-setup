@@ -1,0 +1,20 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: donspace-mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./password.txt:/mosquitto/config/password.txt
+      - donspace-mqtt-data:/mosquitto/data
+      - donspace-mqtt-log:/mosquitto/log
+
+networks:
+  default:
+    name: donspace-net
+    external: true
+
+volumes:
+  donspace-mqtt-data:
+  donspace-mqtt-log:

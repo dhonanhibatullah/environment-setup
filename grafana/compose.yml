@@ -1,0 +1,49 @@
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: donspace-loki
+    user: "0"
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./config/loki-config.yaml:/etc/loki/local-config.yaml
+      - donspace-loki-data:/tmp/loki
+    networks:
+      - default
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: donspace-grafana
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - donspace-grafana-data:/var/lib/grafana
+      - ./config/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
+    networks:
+      - default
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: donspace-alloy
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    volumes:
+      - ./config/alloy-config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "12345:12345"
+    networks:
+      - default
+    depends_on:
+      - loki
+
+networks:
+  default:
+    name: donspace-net
+    external: true
+
+volumes:
+  donspace-loki-data:
+  donspace-grafana-data:
