@@ -29,3 +29,30 @@ This repository contains the local development setup for the Bengkel Inovasi inf
     *   `make stop`: Stops the service containers.
 
     *   `make uninstall`: Stops and removes containers and **all volumes** (data loss).
+
+## **D. Cloudflared Settings**
+
+### **1. Cloudflared Client-Side Installation**
+
+On Powershell, execute:
+
+```bash
+winget install Cloudflare.cloudflared
+```
+
+### **2. SSH**
+
+Add proxy rule on `C:\Users\User\.ssh\config`:
+
+```bash
+Host {CLOUDFLARE_ROUTE}
+    ProxyCommand "C:\Program Files (x86)\cloudflared\cloudflared.exe" access ssh --hostname %h
+```
+
+### **3. RDP**
+
+On Powershell, run `cloudflared access` with:
+
+```bash
+.\cloudflared.exe access tcp --hostname {CLOUDFLARE_ROUTE} --url localhost:3389
+```
