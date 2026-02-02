@@ -54,5 +54,5 @@ Host {CLOUDFLARE_ROUTE}
 On Powershell, run `cloudflared access` with:
 
 ```bash
-.\cloudflared.exe access tcp --hostname {CLOUDFLARE_ROUTE} --url localhost:3389
+cloudflared.exe access tcp --hostname {CLOUDFLARE_ROUTE} --url localhost:3389
 ```
