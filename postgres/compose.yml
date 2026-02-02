@@ -8,13 +8,10 @@ services:
     env_file:
       - .env
     volumes:
-      - donspace-postgres-data:/var/lib/postgresql/data
+      - ${POSTGRES_MOUNT_PATH}:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 networks:
   default:
     name: donspace-net
     external: true
-
-volumes:
-  donspace-postgres-data:
