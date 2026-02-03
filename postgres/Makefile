@@ -1,3 +1,5 @@
+include .env
+
 .PHONY: netcheck install stop uninstall db_create db_drop
 
 netcheck:
