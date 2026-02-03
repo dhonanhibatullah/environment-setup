@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     volumes:
-      - donspace-minio-data:/data
+      - ${MINIO_MOUNT_PATH}:/data
     networks:
       - default
 
@@ -18,6 +18,3 @@ networks:
   default:
     name: donspace-net
     external: true
-
-volumes:
-  donspace-minio-data:
