@@ -9,7 +9,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./config/loki-config.yaml:/etc/loki/local-config.yaml
-      - donspace-loki-data:/tmp/loki
+      - ${LOKI_MOUNT_PATH}:/tmp/loki
     networks:
       - default
 
@@ -22,7 +22,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - donspace-grafana-data:/var/lib/grafana
+      - ${GRAFANA_MOUNT_PATH}:/var/lib/grafana
       - ./config/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
     networks:
       - default
@@ -46,7 +46,3 @@ networks:
   default:
     name: donspace-net
     external: true
-
-volumes:
-  donspace-loki-data:
-  donspace-grafana-data:
