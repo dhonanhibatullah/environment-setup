@@ -1,0 +1,22 @@
+services:
+  emqx:
+    image: emqx/emqx:latest
+    container_name: ${EMQX_CONTAINER_NAME:-development-emqx}
+    hostname: development-emqx
+    restart: unless-stopped
+    ports:
+      - "${EMQX_MQTT_PORT:-11883}:1883"
+      - "${EMQX_MQTTS_PORT:-18883}:8883"
+      - "${EMQX_WS_PORT:-18084}:8083"
+      - "${EMQX_WSS_PORT:-18085}:8084"
+      - "${EMQX_DASHBOARD_PORT:-18083}:18083"
+    env_file:
+      - .env
+    environment:
+      EMQX_NODE__NAME: ${EMQX_NODE_NAME:-emqx@development-emqx}
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD_PASSWORD:-emqxadmin}
+    volumes:
+      - ${EMQX_MOUNT_PATH:-./data}/data:/opt/emqx/data
+      - ${EMQX_MOUNT_PATH:-./data}/log:/opt/emqx/log
+    networks:
+      - default
