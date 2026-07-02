@@ -43,7 +43,7 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 | Redis | `redis` | `development-redis` | `16379 -> 6379` | Requires `REDIS_PASSWORD`. |
 | EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
 | MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
-| DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `18978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
+| DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
 
 ## PostgreSQL Helpers
 
