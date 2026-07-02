@@ -1,7 +1,7 @@
 services:
   redis:
     image: redis:latest
-    container_name: ${REDIS_CONTAINER_NAME:-development-redis}
+    container_name: ${REDIS_CONTAINER_NAME:-staging-redis}
     restart: unless-stopped
     command: redis-server --requirepass ${REDIS_PASSWORD}
     ports:

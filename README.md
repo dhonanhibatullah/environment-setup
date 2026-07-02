@@ -1,6 +1,6 @@
 # Environment Setup
 
-Local Docker Compose setup for development services. Each service is managed from its own directory with a service-local `.env`, `compose.yml`, and `Makefile`.
+Local Docker Compose setup for staging services. Each service is managed from its own directory with a service-local `.env`, `compose.yml`, and `Makefile`.
 
 ## Prerequisites
 
@@ -30,10 +30,10 @@ Local `.env` files and `data` directories are ignored by Git. Persistent storage
 
 | Service | Directory | Container | Host ports | Notes |
 | --- | --- | --- | --- | --- |
-| PostgreSQL / TimescaleDB | `postgres` | `development-postgres` | `15432 -> 5432` | Default database/user/password are defined in `postgres/.env.example`. |
-| Redis | `redis` | `development-redis` | `16379 -> 6379` | Requires `REDIS_PASSWORD`. |
-| EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
-| MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
+| PostgreSQL / TimescaleDB | `postgres` | `staging-postgres` | `15432 -> 5432` | Default database/user/password are defined in `postgres/.env.example`. |
+| Redis | `redis` | `staging-redis` | `16379 -> 6379` | Requires `REDIS_PASSWORD`. |
+| EMQX | `emqx` | `staging-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
+| MinIO | `minio` | `staging-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
 
 ## PostgreSQL Helpers
 
