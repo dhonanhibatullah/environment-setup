@@ -1,58 +1,47 @@
-# **Environment Setup**
+# Environment Setup
 
-This repository contains the local development setup for the Bengkel Inovasi infrastructure, orchestrating multiple services using Docker Compose and Makefiles.
+Local Docker Compose setup for development services. Each service is managed from its own directory with a service-local `.env`, `compose.yml`, and `Makefile`.
 
-## **A. Architecture**
+## Prerequisites
 
-*   **Shared Network**: All containers are connected to a shared external Docker network named `donspace-net`, allowing direct communication between services using container names (e.g., `donspace-postgres`, `donspace-mqtt`).
+- Docker Engine: https://docs.docker.com/engine/
+- Make: https://www.gnu.org/software/make/
 
-*   **Log Collection**: The Grafana stack (Alloy, Loki) collects logs from all containers labeled with `collect_logs: "true"`.
+## Usage
 
-## **B. Prerequisites**
-
-*   Docker Engine: [link](https://docs.docker.com/engine/)
-*   Make: [link](https://www.gnu.org/software/make/)
-
-## **C. Services Installation**
-
-1.  Copy and modify the `.env.example` with
-
-    ```bash
-    cp .env.example .env
-    nano .env
-    ```
-
-2.  After adjusting the `.env`, each service directory contains a `Makefile` with the following targets:
-
-    *   `make install`: Checks dependencies, creates the network, and starts the service.
-
-    *   `make stop`: Stops the service containers.
-
-    *   `make uninstall`: Stops and removes containers and **all volumes** (data loss).
-
-## **D. Cloudflared Settings**
-
-### **1. Cloudflared Client-Side Installation**
-
-On Powershell, execute:
+Each service follows the same pattern:
 
 ```bash
-winget install Cloudflare.cloudflared
+cd <service>
+cp .env.example .env
+nano .env
+make start
 ```
 
-### **2. SSH**
-
-Add proxy rule on `C:\Users\User\.ssh\config`:
+Stop a service with:
 
 ```bash
-Host {CLOUDFLARE_ROUTE}
-    ProxyCommand "C:\Program Files (x86)\cloudflared\cloudflared.exe" access ssh --hostname %h
+make stop
 ```
 
-### **3. RDP**
+Local `.env` files and `data` directories are ignored by Git. Persistent storage is controlled by each service's `*_MOUNT_PATH` value, with `./data` as the Compose fallback where configured.
 
-On Powershell, run `cloudflared access` with:
+## Services
+
+| Service | Directory | Container | Host ports | Notes |
+| --- | --- | --- | --- | --- |
+| PostgreSQL / TimescaleDB | `postgres` | `development-postgres` | `15432 -> 5432` | Default database/user/password are defined in `postgres/.env.example`. |
+| Redis | `redis` | `development-redis` | `16379 -> 6379` | Requires `REDIS_PASSWORD`. |
+| EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
+| MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
+
+## PostgreSQL Helpers
+
+The Postgres Makefile includes database helper targets:
 
 ```bash
-cloudflared.exe access tcp --hostname {CLOUDFLARE_ROUTE} --url localhost:3389
+make db.create n=<database_name> u=<username>
+make db.drop n=<database_name> u=<username>
 ```
+
+These run `createdb` and `dropdb` inside the container named by `POSTGRES_CONTAINER_NAME`.
