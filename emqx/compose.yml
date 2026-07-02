@@ -11,7 +11,7 @@ services:
       - "${EMQX_WSS_PORT:-18085}:8084"
       - "${EMQX_DASHBOARD_PORT:-18083}:18083"
     env_file:
-      - .env
+      - .env.production
     environment:
       EMQX_NODE__NAME: ${EMQX_NODE_NAME:-emqx@production-emqx}
       EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD_PASSWORD:-emqxadmin}
