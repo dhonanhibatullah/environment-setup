@@ -10,3 +10,5 @@ services:
     volumes:
       - ${POSTGRES_MOUNT_PATH:-./data}:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
