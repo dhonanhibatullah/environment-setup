@@ -1,0 +1,13 @@
+services:
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: ${DBEAVER_CONTAINER_NAME:-dbeaver}
+    restart: unless-stopped
+    ports:
+      - "${DBEAVER_PORT:-8978}:8978"
+    env_file:
+      - .env
+    volumes:
+      - ${DBEAVER_MOUNT_PATH:-./data}:/opt/cloudbeaver/workspace
+    networks:
+      - default
