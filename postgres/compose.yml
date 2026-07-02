@@ -1,5 +1,5 @@
 services:
-  postgres:
+  development-postgres:
     image: timescale/timescaledb-ha:pg18.4-ts2.28.2
     container_name: ${POSTGRES_CONTAINER_NAME:-development-postgres}
     restart: unless-stopped

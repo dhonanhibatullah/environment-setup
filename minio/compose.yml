@@ -1,5 +1,5 @@
 services:
-  minio:
+  development-minio:
     image: minio/minio:latest
     container_name: ${MINIO_CONTAINER_NAME:-development-minio}
     restart: unless-stopped

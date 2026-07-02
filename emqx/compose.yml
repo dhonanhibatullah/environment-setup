@@ -1,5 +1,5 @@
 services:
-  emqx:
+  development-emqx:
     image: emqx/emqx:latest
     container_name: ${EMQX_CONTAINER_NAME:-development-emqx}
     hostname: development-emqx

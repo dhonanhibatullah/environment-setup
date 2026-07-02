@@ -1,5 +1,5 @@
 services:
-  redis:
+  development-redis:
     image: redis:latest
     container_name: ${REDIS_CONTAINER_NAME:-development-redis}
     restart: unless-stopped
