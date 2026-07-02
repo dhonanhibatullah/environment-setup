@@ -7,7 +7,7 @@ services:
     ports:
       - "${REDIS_PORT:-16379}:6379"
     env_file:
-      - .env
+      - .env.development
     volumes:
       - ${REDIS_MOUNT_PATH:-./data}:/data
     networks:

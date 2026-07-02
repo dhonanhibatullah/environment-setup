@@ -1,12 +1,12 @@
-include .env
+include .env.development
 
 .PHONY: start stop db.create db.drop
 
 start:
-	@sudo docker compose -f compose.yml up -d
+	@sudo docker compose --env-file .env.development -f compose.yml up -d
 
 stop:
-	@sudo docker compose -f compose.yml down
+	@sudo docker compose --env-file .env.development -f compose.yml down
 
 db.create:
 	@if [ -z "$(n)" ]; then echo "Error: database name parameter required (use n=database_name)" && exit 1; fi
