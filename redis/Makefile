@@ -1,10 +1,9 @@
-include .env
+include .env.staging
 
 .PHONY: start stop
 
 start: 
-	@sudo docker compose up -d
+	@sudo docker compose --env-file .env.staging up -d
 
 stop:
-	@sudo docker compose down
-
+	@sudo docker compose --env-file .env.staging down

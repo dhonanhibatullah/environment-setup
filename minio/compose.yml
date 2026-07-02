@@ -8,7 +8,7 @@ services:
       - "${MINIO_API_PORT:-19000}:9000"
       - "${MINIO_CONSOLE_PORT:-19001}:9001"
     env_file:
-      - .env
+      - .env.staging
     volumes:
       - ${MINIO_MOUNT_PATH:-./data}:/data
     networks:

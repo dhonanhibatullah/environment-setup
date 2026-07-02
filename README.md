@@ -13,8 +13,8 @@ Each service follows the same pattern:
 
 ```bash
 cd <service>
-cp .env.example .env
-nano .env
+cp .env.example .env.staging
+nano .env.staging
 make start
 ```
 
@@ -24,7 +24,7 @@ Stop a service with:
 make stop
 ```
 
-Local `.env` files and `data` directories are ignored by Git. Persistent storage is controlled by each service's `*_MOUNT_PATH` value, with `./data` as the Compose fallback where configured.
+Local `.env*` files and `data` directories are ignored by Git. Persistent storage is controlled by each service's `*_MOUNT_PATH` value, with `./data` as the Compose fallback where configured.
 
 ## Services
 

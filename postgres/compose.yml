@@ -6,7 +6,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-15432}:5432"
     env_file:
-      - .env
+      - .env.staging
     volumes:
       - ${POSTGRES_MOUNT_PATH:-./data}:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
