@@ -1,20 +1,15 @@
 services:
   minio:
     image: minio/minio:latest
-    container_name: donspace-minio
+    container_name: ${MINIO_CONTAINER_NAME:-development-minio}
     restart: unless-stopped
     command: server /data --console-address ":9001"
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${MINIO_API_PORT:-19000}:9000"
+      - "${MINIO_CONSOLE_PORT:-19001}:9001"
     env_file:
       - .env
     volumes:
-      - ${MINIO_MOUNT_PATH}:/data
+      - ${MINIO_MOUNT_PATH:-./data}:/data
     networks:
       - default
-
-networks:
-  default:
-    name: donspace-net
-    external: true
