@@ -1,17 +1,12 @@
 services:
   postgres:
-    image: timescale/timescaledb:latest-pg16
-    container_name: donspace-postgres
+    image: timescale/timescaledb-ha:pg18.4-ts2.28.2
+    container_name: ${POSTGRES_CONTAINER_NAME:-development-postgres}
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-15432}:5432"
     env_file:
       - .env
     volumes:
       - ${POSTGRES_MOUNT_PATH}:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
-networks:
-  default:
-    name: donspace-net
-    external: true
