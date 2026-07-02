@@ -1,5 +1,5 @@
 services:
-  emqx:
+  staging-emqx:
     image: emqx/emqx:latest
     container_name: ${EMQX_CONTAINER_NAME:-staging-emqx}
     hostname: staging-emqx

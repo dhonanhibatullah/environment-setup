@@ -1,5 +1,5 @@
 services:
-  postgres:
+  staging-postgres:
     image: timescale/timescaledb-ha:pg18.4-ts2.28.2
     container_name: ${POSTGRES_CONTAINER_NAME:-staging-postgres}
     restart: unless-stopped

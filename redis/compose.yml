@@ -1,5 +1,5 @@
 services:
-  redis:
+  staging-redis:
     image: redis:latest
     container_name: ${REDIS_CONTAINER_NAME:-staging-redis}
     restart: unless-stopped
