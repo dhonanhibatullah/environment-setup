@@ -1,7 +1,7 @@
 services:
   minio:
     image: minio/minio:latest
-    container_name: ${MINIO_CONTAINER_NAME:-staging-minio}
+    container_name: ${MINIO_CONTAINER_NAME:-production-minio}
     restart: unless-stopped
     command: server /data --console-address ":9001"
     ports:
