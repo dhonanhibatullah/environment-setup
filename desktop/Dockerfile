@@ -6,10 +6,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     ROS_DISTRO=jazzy \
-    CUDA_HOME=/usr/local/cuda-12.4
+    CUDA_HOME=/usr/local/cuda
 
-ENV PATH=/usr/local/cuda-12.4/bin:/home/kasm-user/.local/bin:${PATH} \
-    LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64
+ENV PATH=/usr/local/cuda/bin:/home/kasm-user/.local/bin:${PATH} \
+    LD_LIBRARY_PATH=/usr/local/cuda/lib64
 
 USER root
 
@@ -48,7 +48,7 @@ RUN apt-get update \
         clang \
         cmake \
         curl \
-        cuda-toolkit-12-4 \
+        cuda-toolkit-12 \
         dnsutils \
         ffmpeg \
         gdb \
@@ -106,11 +106,13 @@ RUN apt-get update \
         wget \
     && (rosdep init || true) \
     && (rosdep update || true) \
-    && ln -sfn /usr/local/cuda-12.4 /usr/local/cuda \
+    && CUDA_DIR="$(find /usr/local -maxdepth 1 -type d -name 'cuda-12*' | sort -V | tail -n 1)" \
+    && test -n "${CUDA_DIR}" \
+    && ln -sfn "${CUDA_DIR}" /usr/local/cuda \
     && { \
-        echo "export CUDA_HOME=/usr/local/cuda-12.4"; \
-        echo "export PATH=/usr/local/cuda-12.4/bin:\${PATH}"; \
-        echo "export LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}"; \
+        echo "export CUDA_HOME=/usr/local/cuda"; \
+        echo "export PATH=/usr/local/cuda/bin:\${PATH}"; \
+        echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}"; \
     } > /etc/profile.d/cuda.sh \
     && chmod 0644 /etc/profile.d/cuda.sh \
     && ldconfig \
