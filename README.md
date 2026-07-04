@@ -58,7 +58,7 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 | EMQX | `emqx` | `production-emqx` | `1883 -> 1883`, `8883 -> 8883`, `8084 -> 8083`, `8085 -> 8084`, `8083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
 | MinIO | `minio` | `production-minio` | `9000 -> 9000`, `9001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
 | DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
-| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.4, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
+| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.x, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
 
 ## Desktop GPU Access
 
@@ -83,7 +83,7 @@ nvcc --version
 
 The Kasm user home persists at `DESKTOP_USER_MOUNT_PATH` and is mounted to `/home/kasm-user`. The ROS 2 workspace lives inside that mount at `/home/kasm-user/ros2_ws`.
 
-CUDA Toolkit 12.4 is installed for compiling CUDA code, custom AI operators, and native GPU projects. Python AI libraries are not installed globally. Create a project virtual environment inside the mounted workspace instead:
+CUDA Toolkit 12.x is installed for compiling CUDA code, custom AI operators, and native GPU projects. Python AI libraries are not installed globally. Create a project virtual environment inside the mounted workspace instead:
 
 ```bash
 cd ~/ros2_ws
