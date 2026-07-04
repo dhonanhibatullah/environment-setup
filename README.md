@@ -41,7 +41,13 @@ Stop a service with:
 make stop
 ```
 
-Local `.env*` files and `data` directories are ignored by Git. Persistent storage is controlled by each service's `*_MOUNT_PATH` value, with `./data` as the Compose fallback where configured.
+Follow logs with:
+
+```bash
+make logs
+```
+
+Local `.env*` files and `data` directories are ignored by Git. Persistent storage is controlled by each service's `*_MOUNT_PATH` value, or `DESKTOP_USER_MOUNT_PATH` for the desktop home mount, with `./data` as the Compose fallback where configured.
 
 ## Services
 
@@ -52,11 +58,39 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 | EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
 | MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
 | DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
-| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with NVIDIA GPU access and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
+| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.4, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
 
 ## Desktop GPU Access
 
-The `desktop` service requests all NVIDIA GPUs through Docker Compose. The host must already have the NVIDIA driver and NVIDIA Container Toolkit installed. A GTX 1050 Ti is fine as long as `nvidia-smi` works on the host and `docker run --rm --gpus all nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi` works.
+The `desktop` service requests all NVIDIA GPUs through Docker Compose. The host must already have the NVIDIA driver and NVIDIA Container Toolkit installed. A GTX 1050 Ti with `nvidia-driver-535` is fine as long as these commands work on the host:
+
+```bash
+nvidia-smi
+docker run --rm --gpus all ubuntu nvidia-smi
+```
+
+Inside the desktop, verify the robotics and GPU tooling with:
+
+```bash
+sudo -n true
+ros2 --version
+rviz2
+gz sim
+glxinfo -B
+nvidia-smi
+nvcc --version
+```
+
+The Kasm user home persists at `DESKTOP_USER_MOUNT_PATH` and is mounted to `/home/kasm-user`. The ROS 2 workspace lives inside that mount at `/home/kasm-user/ros2_ws`.
+
+CUDA Toolkit 12.4 is installed for compiling CUDA code, custom AI operators, and native GPU projects. Python AI libraries are not installed globally. Create a project virtual environment inside the mounted workspace instead:
+
+```bash
+cd ~/ros2_ws
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+```
 
 ## PostgreSQL Helpers
 
