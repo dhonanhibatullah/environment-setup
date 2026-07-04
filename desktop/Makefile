@@ -1,6 +1,9 @@
 include .env
 
-.PHONY: start stop logs
+.PHONY: build start stop logs
+
+build:
+	@sudo docker compose --env-file .env build
 
 start:
 	@sudo docker compose --env-file .env up -d
