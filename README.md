@@ -18,10 +18,17 @@ nano .env.development
 make start
 ```
 
-DBeaver is shared across branches, so it uses the same `.env` filename everywhere:
+Branch-neutral services use the same `.env` filename everywhere:
 
 ```bash
 cd dbeaver
+cp .env.example .env
+nano .env
+make start
+```
+
+```bash
+cd desktop
 cp .env.example .env
 nano .env
 make start
@@ -44,6 +51,11 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 | EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
 | MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
 | DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
+| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with NVIDIA GPU access. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
+
+## Desktop GPU Access
+
+The `desktop` service requests all NVIDIA GPUs through Docker Compose. The host must already have the NVIDIA driver and NVIDIA Container Toolkit installed. A GTX 1050 Ti is fine as long as `nvidia-smi` works on the host and `docker run --rm --gpus all nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi` works.
 
 ## PostgreSQL Helpers
 
