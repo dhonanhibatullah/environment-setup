@@ -1,12 +1,19 @@
 include .env.staging
 
-.PHONY: start stop db.create db.drop
+.PHONY: prepare start stop logs db.create db.drop
 
-start:
+prepare:
+	@sudo mkdir -p $(POSTGRES_MOUNT_PATH)
+	@sudo chown 1000:1000 $(POSTGRES_MOUNT_PATH)
+
+start: prepare
 	@sudo docker compose --env-file .env.staging -f compose.yml up -d
 
 stop:
 	@sudo docker compose --env-file .env.staging -f compose.yml down
+
+logs:
+	@sudo docker compose --env-file .env.staging -f compose.yml logs -f
 
 db.create:
 	@if [ -z "$(n)" ]; then echo "Error: database name parameter required (use n=database_name)" && exit 1; fi
