@@ -58,7 +58,7 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 | EMQX | `emqx` | `production-emqx` | `1883 -> 1883`, `8883 -> 8883`, `8084 -> 8083`, `8085 -> 8084`, `8083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
 | MinIO | `minio` | `production-minio` | `9000 -> 9000`, `9001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
 | DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
-| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.x, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
+| Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901`, `2222 -> 22` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.x, SSH, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
 
 ## Desktop GPU Access
 
@@ -91,6 +91,16 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 ```
+
+## Desktop SSH Access
+
+The desktop exposes SSH on `DESKTOP_SSH_PORT` and disables password login. Set `DESKTOP_SSH_PUBLIC_KEY` to your single-line public key before starting the container, then connect with:
+
+```bash
+ssh -p 2222 kasm-user@<server-ip>
+```
+
+The SSH key is written to `/home/kasm-user/.ssh/authorized_keys` inside `DESKTOP_USER_MOUNT_PATH`, so it persists across container rebuilds.
 
 ## PostgreSQL Helpers
 
