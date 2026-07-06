@@ -94,13 +94,17 @@ python -m pip install --upgrade pip
 
 ## Desktop SSH Access
 
-The desktop exposes SSH on `DESKTOP_SSH_PORT` and disables password login. Set `DESKTOP_SSH_PUBLIC_KEY` to your single-line public key before starting the container, then connect with:
+The desktop exposes SSH on `DESKTOP_SSH_PORT` and disables password login. Set `DESKTOP_SSH_PUBLIC_KEYS` before starting the container, then connect with:
+
+```env
+DESKTOP_SSH_PUBLIC_KEYS="ssh-ed25519 AAAA... user1;ssh-ed25519 BBBB... user2"
+```
 
 ```bash
 ssh -p 2222 kasm-user@<server-ip>
 ```
 
-The SSH key is written to `/home/kasm-user/.ssh/authorized_keys` inside `DESKTOP_USER_MOUNT_PATH`, so it persists across container rebuilds.
+The SSH keys are written to `/home/kasm-user/.ssh/authorized_keys` inside `DESKTOP_USER_MOUNT_PATH`, so they persist across container rebuilds.
 
 ## PostgreSQL Helpers
 
