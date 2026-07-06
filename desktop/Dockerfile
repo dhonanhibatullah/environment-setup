@@ -129,8 +129,9 @@ RUN apt-get update \
         echo "set -euo pipefail"; \
         echo "ssh-keygen -A"; \
         echo "install -d -m 700 -o kasm-user -g kasm-user /home/kasm-user/.ssh"; \
-        echo "if [ -n \"\${DESKTOP_SSH_PUBLIC_KEY:-}\" ]; then"; \
-        echo "    printf '%s\n' \"\${DESKTOP_SSH_PUBLIC_KEY}\" > /home/kasm-user/.ssh/authorized_keys"; \
+        echo "SSH_PUBLIC_KEYS=\"\${DESKTOP_SSH_PUBLIC_KEYS:-\${DESKTOP_SSH_PUBLIC_KEY:-}}\""; \
+        echo "if [ -n \"\${SSH_PUBLIC_KEYS}\" ]; then"; \
+        echo "    printf '%b\n' \"\${SSH_PUBLIC_KEYS}\" | tr ';' '\n' | sed '/^[[:space:]]*$/d' > /home/kasm-user/.ssh/authorized_keys"; \
         echo "fi"; \
         echo "if [ -f /home/kasm-user/.ssh/authorized_keys ]; then"; \
         echo "    chown kasm-user:kasm-user /home/kasm-user/.ssh/authorized_keys"; \
