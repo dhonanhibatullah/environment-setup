@@ -72,6 +72,7 @@ RUN apt-get update \
         mesa-utils \
         net-tools \
         ninja-build \
+        openssh-server \
         pciutils \
         pipx \
         pkg-config \
@@ -116,6 +117,38 @@ RUN apt-get update \
     } > /etc/profile.d/cuda.sh \
     && chmod 0644 /etc/profile.d/cuda.sh \
     && ldconfig \
+    && install -d /run/sshd /etc/ssh/sshd_config.d /etc/supervisor/conf.d \
+    && { \
+        echo "PasswordAuthentication no"; \
+        echo "PubkeyAuthentication yes"; \
+        echo "PermitRootLogin no"; \
+        echo "AllowUsers kasm-user"; \
+    } > /etc/ssh/sshd_config.d/desktop.conf \
+    && { \
+        echo "#!/usr/bin/env bash"; \
+        echo "set -euo pipefail"; \
+        echo "ssh-keygen -A"; \
+        echo "install -d -m 700 -o kasm-user -g kasm-user /home/kasm-user/.ssh"; \
+        echo "if [ -n \"\${DESKTOP_SSH_PUBLIC_KEY:-}\" ]; then"; \
+        echo "    printf '%s\n' \"\${DESKTOP_SSH_PUBLIC_KEY}\" > /home/kasm-user/.ssh/authorized_keys"; \
+        echo "fi"; \
+        echo "if [ -f /home/kasm-user/.ssh/authorized_keys ]; then"; \
+        echo "    chown kasm-user:kasm-user /home/kasm-user/.ssh/authorized_keys"; \
+        echo "    chmod 600 /home/kasm-user/.ssh/authorized_keys"; \
+        echo "fi"; \
+    } > /usr/local/bin/desktop-ssh-setup \
+    && chmod 0755 /usr/local/bin/desktop-ssh-setup \
+    && { \
+        echo "[program:sshd]"; \
+        echo "command=/bin/bash -lc '/usr/local/bin/desktop-ssh-setup && exec /usr/sbin/sshd -D -e'"; \
+        echo "autostart=true"; \
+        echo "autorestart=true"; \
+        echo "priority=20"; \
+        echo "stdout_logfile=/dev/fd/1"; \
+        echo "stdout_logfile_maxbytes=0"; \
+        echo "stderr_logfile=/dev/fd/2"; \
+        echo "stderr_logfile_maxbytes=0"; \
+    } > /etc/supervisor/conf.d/sshd.conf \
     && install -d -o kasm-user -g kasm-user /home/kasm-user/ros2_ws/src \
     && { \
         echo ""; \
@@ -126,4 +159,4 @@ RUN apt-get update \
     } >> /etc/bash.bashrc \
     && rm -rf /var/lib/apt/lists/*
 
-USER kasm-user
+USER root

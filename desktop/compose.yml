@@ -9,10 +9,12 @@ services:
     shm_size: ${DESKTOP_SHM_SIZE:-8gb}
     ports:
       - "${DESKTOP_PORT:-6901}:6901"
+      - "${DESKTOP_SSH_PORT:-2222}:22"
     env_file:
       - .env
     environment:
       VNC_PW: ${DESKTOP_VNC_PASSWORD:-password}
+      DESKTOP_SSH_PUBLIC_KEY: ${DESKTOP_SSH_PUBLIC_KEY:-}
       NVIDIA_VISIBLE_DEVICES: ${DESKTOP_NVIDIA_VISIBLE_DEVICES:-all}
       NVIDIA_DRIVER_CAPABILITIES: ${DESKTOP_NVIDIA_DRIVER_CAPABILITIES:-all}
     deploy:
