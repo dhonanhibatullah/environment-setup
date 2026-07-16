@@ -53,10 +53,11 @@ Local `.env*` files and `data` directories are ignored by Git. Persistent storag
 
 | Service | Directory | Container | Host ports | Notes |
 | --- | --- | --- | --- | --- |
-| PostgreSQL / TimescaleDB | `postgres` | `production-postgres` | `5432 -> 5432` | Default database/user/password are defined in `postgres/.env.example`. |
-| Redis | `redis` | `production-redis` | `6379 -> 6379` | Requires `REDIS_PASSWORD`. |
-| EMQX | `emqx` | `production-emqx` | `1883 -> 1883`, `8883 -> 8883`, `8084 -> 8083`, `8085 -> 8084`, `8083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
-| MinIO | `minio` | `production-minio` | `9000 -> 9000`, `9001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
+| PostgreSQL / TimescaleDB | `postgres` | `development-postgres` | `15432 -> 5432` | Default database/user/password are defined in `postgres/.env.example`. |
+| Redis | `redis` | `development-redis` | `16379 -> 6379` | Requires `REDIS_PASSWORD`. |
+| EMQX | `emqx` | `development-emqx` | `11883 -> 1883`, `18883 -> 8883`, `18084 -> 8083`, `18085 -> 8084`, `18083 -> 18083` | Dashboard user is `admin`; password is `EMQX_DASHBOARD_PASSWORD`. MQTT users are managed in the EMQX Dashboard. |
+| MinIO | `minio` | `development-minio` | `19000 -> 9000`, `19001 -> 9001` | Root credentials are defined by `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`. |
+| Keycloak | `keycloak` | `production-keycloak` | `8080 -> 8080`, `8443 -> 8443` | Runs in `start-dev` mode against the `postgres` service over `host.docker.internal` (requires `KC_DB_*`/`KEYCLOAK_DB_*` vars to match `postgres/.env.production` and the target database to exist — see `make db.create` below). Bootstrap admin credentials are `KEYCLOAK_ADMIN` and `KEYCLOAK_ADMIN_PASSWORD`. |
 | DBeaver / CloudBeaver | `dbeaver` | `dbeaver` | `8978 -> 8978` | Shared database management UI across branches. Complete first-launch setup in the browser. |
 | Kasm Ubuntu Desktop | `desktop` | `desktop` | `6901 -> 6901`, `2222 -> 22` | Shared browser-accessible Ubuntu Noble desktop with ROS 2 Jazzy, Gazebo, RViz, CUDA Toolkit 12.x, SSH, NVIDIA GPU access, native AI build tools, and passwordless sudo for `kasm-user`. Open `https://localhost:6901` and login with `kasm_user` plus `DESKTOP_VNC_PASSWORD`. |
 
