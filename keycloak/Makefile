@@ -1,4 +1,4 @@
-include .env.development
+include .env.staging
 
 .PHONY: prepare start stop logs
 
@@ -7,10 +7,10 @@ prepare:
 	@sudo chown 1000:1000 $(KEYCLOAK_MOUNT_PATH)
 
 start: prepare
-	@sudo docker compose --env-file .env.development up -d
+	@sudo docker compose --env-file .env.staging up -d
 
 stop:
-	@sudo docker compose --env-file .env.development down
+	@sudo docker compose --env-file .env.staging down
 
 logs:
-	@sudo docker compose --env-file .env.development logs -f
+	@sudo docker compose --env-file .env.staging logs -f
