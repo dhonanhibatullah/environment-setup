@@ -141,7 +141,7 @@ RUN apt-get update \
     && chmod 0755 /usr/local/bin/desktop-ssh-setup \
     && { \
         echo "[program:sshd]"; \
-        echo "command=/bin/bash -lc '/usr/local/bin/desktop-ssh-setup && exec /usr/sbin/sshd -D -e'"; \
+        echo "command=/bin/bash -lc 'sudo /usr/local/bin/desktop-ssh-setup && exec sudo /usr/sbin/sshd -D -e'"; \
         echo "autostart=true"; \
         echo "autorestart=true"; \
         echo "priority=20"; \
@@ -150,6 +150,12 @@ RUN apt-get update \
         echo "stderr_logfile=/dev/fd/2"; \
         echo "stderr_logfile_maxbytes=0"; \
     } > /etc/supervisor/conf.d/sshd.conf \
+    && { \
+        echo "#!/usr/bin/env bash"; \
+        echo "sudo /usr/local/bin/desktop-ssh-setup"; \
+        echo "sudo /usr/sbin/sshd || true"; \
+    } > /dockerstartup/custom_startup.sh \
+    && chmod 0755 /dockerstartup/custom_startup.sh \
     && install -d -o kasm-user -g kasm-user /home/kasm-user/ros2_ws/src \
     && { \
         echo ""; \
@@ -160,4 +166,4 @@ RUN apt-get update \
     } >> /etc/bash.bashrc \
     && rm -rf /var/lib/apt/lists/*
 
-USER root
+USER kasm-user
